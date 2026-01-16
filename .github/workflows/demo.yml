@@ -3,8 +3,13 @@ on:
   push:
     branches:
       - main
+env:
+  API_URL: test.com
 jobs:
   test:
+    environment: dev
+    env:
+      CLIENT_SECRET: ${{vars.CLIENT_SECRET}}
     runs-on: ubuntu-latest
     steps:
       - name: Get code
@@ -15,6 +20,10 @@ jobs:
         run: npm run lint
       - name: Test code
         run: npm run test
+      - name: Output vars
+        run: |
+          echo $API_URL
+          echo $CLIENT_SECRET
   build:
     needs: test
     runs-on: ubuntu-latest
